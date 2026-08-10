@@ -1,0 +1,16 @@
+[Unit]
+Description=Subway Announcement Raspberry Pi Audio Agent
+Wants=network-online.target
+After=network-online.target sound.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/subway-audio
+EnvironmentFile=/home/pi/subway-audio/config.env
+ExecStart=/home/pi/subway-audio/.venv/bin/python /home/pi/subway-audio/src/audio_agent.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

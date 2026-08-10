@@ -1,0 +1,30 @@
+# Secrets / machine-specific configuration
+config.env
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Runtime data
+queue/*
+!queue/.gitkeep
+control/*
+!control/.gitkeep
+runtime/*
+!runtime/.gitkeep
+!runtime/raw/
+runtime/raw/*
+!runtime/raw/.gitkeep
+
+# Temporary audio / logs
+*.wav
+*.part
+*.tmp
+*.log
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

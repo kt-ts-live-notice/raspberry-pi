@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BASE_DIR="/home/pi/subway-audio"
+CONTROL_DIR="${BASE_DIR}/control"
+STATUS_FILE="${BASE_DIR}/runtime/status.json"
+
+mkdir -p "${CONTROL_DIR}"
+
+case "${1:-}" in
+  start)
+    rm -f "${CONTROL_DIR}/stop"
+    touch "${CONTROL_DIR}/start"
+    echo "Broadcast start requested."
+    ;;
+  stop)
+    rm -f "${CONTROL_DIR}/start"
+    touch "${CONTROL_DIR}/stop"
+    echo "Broadcast stop requested."
+    ;;
+  status)
+    if [[ -f "${STATUS_FILE}" ]]; then
+      cat "${STATUS_FILE}"
+      echo
+    else
+      echo "Status file does not exist: ${STATUS_FILE}" >&2
+      exit 1
+    fi
+    ;;
+  logs)
+    exec sudo journalctl -u subway-audio.service -f
+    ;;
+  *)
+    cat <<'EOF'
+Usage:
+  subway-audioctl start   Start a new announcement session
+  subway-audioctl stop    Finalize the current announcement session
+  subway-audioctl status  Show current agent status
+  subway-audioctl logs    Follow systemd logs
+EOF
+    exit 1
+    ;;
+esac
